@@ -31,9 +31,9 @@ const stringlifyStream = () => JSONStream.stringify('[', ',', ']');
   const fileStream = fs.createWriteStream('files/json-result.json');
 
   fileStream.write(`{ "data": `);
+
   const stringlifyData = stringlifyStream();
   dataItems.pipe(stringlifyData).pipe(fileStream, { end: false });
-
   await finishedAsync(stringlifyData);
 
   fileStream.write(`, "property": "4"`);

@@ -15,70 +15,24 @@ const transactions = [
 
 const readable = Readable.from(transactions);
 
-const filter = (fn, options = {}) =>
-  new Transform({
-    objectMode: true,
-    ...options,
+const filter = (fn, options = {}) => {
+  // ToDo Add implementation
+};
 
-    transform(chunk, encoding, callback) {
-      let take;
-      try {
-        take = fn(chunk);
-      } catch (e) {
-        return callback(e);
-      }
-      return callback(null, take ? chunk : undefined);
-    },
-  });
+const map = (fn, options = {}) => {
+  // ToDo Add implementation
+};
 
-const map = (fn, options = {}) =>
-  new Transform({
-    objectMode: true,
-    ...options,
-
-    transform(chunk, encoding, callback) {
-      let res;
-      try {
-        res = fn(chunk);
-      } catch (e) {
-        return callback(e);
-      }
-      callback(null, res);
-    },
-  });
-
-const reduce = (fn, acc, options = {}) =>
-  new Transform({
-    objectMode: true,
-    ...options,
-
-    transform(chunk, encoding, callback) {
-      try {
-        acc = fn(acc, chunk);
-      } catch (e) {
-        return callback(e);
-      }
-      return callback();
-    },
-
-    flush(callback) {
-      callback(null, acc);
-    },
-  });
+const reduce = (fn, acc, options = {}) => {
+    // ToDo Add implementation
+  };
 
 (async () => {
-  const resultStream = new PassThrough({ objectMode: true });
-  const result = streamToPromise(resultStream);
-
   await pipelineAsync(
     readable,
-
-    map((transaction) => transaction.amount * USD2EUR_CONVERSION_FACTOR),
-    filter((amount) => amount > 100),
-    reduce((sum, amount) => sum + amount, 0),
-
-    resultStream,
+    // map((transaction) => transaction.amount * USD2EUR_CONVERSION_FACTOR),
+    // filter((amount) => amount > 100),
+    // reduce((sum, amount) => sum + amount, 0),
+    process.stdout
   );
-
-  console.log(await result);
 })();
